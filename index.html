@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2457a6">
+<title>HearWell — Hearing Care</title>
+<style>
+:root{--primary:#2457a6;--primary2:#3b78d8;--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e4e9f0;--ok:#16794a;--warn:#9a6700}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea{font:inherit} button{cursor:pointer}
+.app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);padding-bottom:82px}
+header{padding:22px 18px 10px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{font-weight:800;font-size:23px;color:var(--primary)} .sub{font-size:13px;color:var(--muted);margin-top:2px}
+main{padding:16px}.screen{display:none}.screen.active{display:block}
+h1{font-size:24px;margin:4px 0 5px}.lead{color:var(--muted);margin:0 0 18px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 2px 8px #1b2b3d08}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:14px;border:1px solid var(--line);border-radius:15px;background:#fff}
+.stat b{display:block;font-size:23px;margin-top:4px}.label{font-size:12px;color:var(--muted)}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.pill{padding:6px 9px;border-radius:999px;font-size:12px;background:#edf3ff;color:var(--primary);font-weight:700}
+.progress{height:9px;background:#e9edf3;border-radius:99px;overflow:hidden;margin:10px 0}.bar{height:100%;background:var(--primary2);width:82%;border-radius:99px}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;background:var(--primary);color:#fff}.btn.secondary{background:#eef3fb;color:var(--primary)}.btn.ghost{background:transparent;color:var(--primary);padding:6px}
+.list{display:flex;flex-direction:column;gap:9px}.item{padding:13px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.item small{color:var(--muted)}.check{display:flex;align-items:center;gap:10px}.check input{width:20px;height:20px}
+textarea,input[type=text]{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+textarea{min-height:100px;resize:vertical}.scale{display:flex;gap:5px;flex-wrap:wrap}.scale button{width:35px;height:35px;border:1px solid var(--line);background:#fff;border-radius:9px}.scale button.selected{background:var(--primary);color:#fff}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:72px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;z-index:10;padding-bottom:env(safe-area-inset-bottom)}
+.nav button{flex:1;border:0;background:#fff;color:var(--muted);font-size:11px}.nav button.active{color:var(--primary);font-weight:800}.icon{font-size:21px;display:block;margin-bottom:3px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#172033;color:#fff;padding:11px 15px;border-radius:12px;font-size:13px;display:none;z-index:20}
+.section-title{font-size:16px;font-weight:800;margin:20px 0 8px}.ok{color:var(--ok);font-weight:700}.warning{color:var(--warn);font-weight:700}
+.hero{background:linear-gradient(135deg,#2457a6,#4d82dc);color:#fff;border:0}.hero .label{color:#dbe7ff}.hero .btn{background:#fff;color:var(--primary)}
+.mic{font-size:42px;text-align:center;padding:15px}.caption{background:#f6f8fb;border-radius:12px;padding:15px;min-height:90px}
+@media(min-width:700px){body{padding:20px}.app{border-radius:25px;overflow:hidden;box-shadow:0 8px 35px #17203318}.nav{bottom:20px;border-radius:0 0 25px 25px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">HearWell</div><div class="sub">Your hearing care companion</div></header>
+<main>
+<section id="home" class="screen active">
+<h1>Good evening 👋</h1><p class="lead">Here’s your hearing-care snapshot.</p>
+<div class="card hero"><div class="label">Today's hearing-aid use</div><div style="font-size:34px;font-weight:800;margin:3px 0">7h 42m</div><div class="row"><span class="label">Goal: 8 hours</span><span class="pill">96%</span></div><div class="progress"><div class="bar" style="width:96%"></div></div><button class="btn" onclick="show('hearing')">View hearing</button></div>
+<div class="grid"><div class="stat"><span class="label">Battery</span><b>68%</b><span class="ok">Good</span></div><div class="stat"><span class="label">Plan adherence</span><b>82%</b><span class="ok">This week</span></div></div>
+<div class="section-title">Today's plan</div>
+<div class="list">
+<label class="item check"><input type="checkbox" onchange="saveCheck(this)"> <span><b>Wear hearing device</b><br><small>Goal: 8 hours</small></span></label>
+<label class="item check"><input type="checkbox" onchange="saveCheck(this)"> <span><b>Complete auditory training</b><br><small>15 minutes</small></span></label>
+<label class="item check"><input type="checkbox" onchange="saveCheck(this)"> <span><b>Review communication tip</b><br><small>1 minute</small></span></label>
+</div>
+<div class="section-title">Next appointment</div>
+<div class="card"><div class="row"><div><b>Audiology follow-up</b><br><small>October 14 · 9:00 AM</small></div><span class="pill">12 days</span></div></div>
+</section>
+
+<section id="hearing" class="screen">
+<h1>My Hearing</h1><p class="lead">Track symptoms, devices, and daily hearing experiences.</p>
+<div class="card"><div class="row"><div><b>Hearing device</b><br><small>Connected · Left + Right</small></div><span class="pill">68%</span></div><div class="progress"><div class="bar" style="width:68%"></div></div><button class="btn secondary" onclick="toast('Maintenance reminder set')">Set maintenance reminder</button></div>
+<div class="card"><b>How difficult was hearing today?</b><div class="scale" id="difficulty"></div><small>0 = no difficulty · 10 = extremely difficult</small></div>
+<div class="card"><b>Tinnitus today?</b><div class="scale" id="tinnitus"></div></div>
+<div class="card"><b>Hearing diary note</b><textarea id="note" placeholder="For example: Restaurant was difficult with background noise."></textarea><button class="btn" style="margin-top:10px" onclick="saveDiary()">Save diary</button></div>
+</section>
+
+<section id="training" class="screen">
+<h1>Training</h1><p class="lead">Short exercises to practice listening and speech understanding.</p>
+<div class="card"><div class="row"><div><b>Weekly progress</b><br><small>12 of 15 sessions</small></div><span class="pill">80%</span></div><div class="progress"><div class="bar" style="width:80%"></div></div></div>
+<div class="card"><div class="mic">🎧</div><h3 style="text-align:center">Speech in background noise</h3><p class="lead" style="text-align:center">Listen carefully, then choose what you heard.</p><button class="btn" style="width:100%" onclick="startExercise()">Start exercise</button></div>
+<div class="card"><b>Important</b><p class="lead">These exercises support hearing rehabilitation and engagement. They are not a diagnostic hearing test.</p></div>
+</section>
+
+<section id="learn" class="screen">
+<h1>Learn</h1><p class="lead">Practical information for living well with hearing loss.</p>
+<div class="list">
+<div class="item" onclick="toast('Module opened')"><b>🎧 Hearing aids</b><br><small>Cleaning, use, batteries, and troubleshooting</small></div>
+<div class="item" onclick="toast('Module opened')"><b>🍽️ Hearing in restaurants</b><br><small>Reduce background noise and improve communication</small></div>
+<div class="item" onclick="toast('Module opened')"><b>💬 Communication strategies</b><br><small>Tips for you, family, and conversation partners</small></div>
+<div class="item" onclick="toast('Module opened')"><b>🔔 Tinnitus</b><br><small>Understanding symptoms and when to seek care</small></div>
+<div class="item" onclick="toast('Module opened')"><b>🩺 When to contact your clinician</b><br><small>Important symptoms and follow-up guidance</small></div>
+</div>
+</section>
+
+<section id="care" class="screen">
+<h1>Care</h1><p class="lead">Stay connected with your treatment plan.</p>
+<div class="card"><div class="row"><div><b>Next appointment</b><br><small>October 14 · 9:00 AM</small></div><button class="btn secondary" onclick="toast('Reminder added')">Remind me</button></div></div>
+<div class="section-title">Questions for your clinician</div>
+<div class="card"><div class="list">
+<label class="check"><input type="checkbox"> <span>Difficulty understanding speech in noise</span></label>
+<label class="check"><input type="checkbox"> <span>Review hearing-aid settings</span></label>
+<label class="check"><input type="checkbox"> <span>Discuss tinnitus</span></label>
+</div></div>
+<div class="card"><b>Patient report</b><p class="lead">Create a summary of your recent hearing diary and treatment engagement to discuss with your clinician.</p><button class="btn" onclick="generateReport()">Generate report</button></div>
+<div class="card"><b>Live captions</b><p class="lead">A future production version can connect to a privacy-compliant speech-to-text service for real-time conversation captions.</p><button class="btn secondary" onclick="show('captions')">Open demo</button></div>
+</section>
+
+<section id="captions" class="screen">
+<h1>Live Captions</h1><p class="lead">Visual captions for conversations.</p>
+<div class="card"><div class="mic">🎙️</div><div class="caption" id="captionText">Tap “Start” to demonstrate the caption interface.</div><button class="btn" style="width:100%;margin-top:12px" onclick="demoCaption()">Start demo</button></div>
+</section>
+</main>
+<nav class="nav">
+<button class="active" onclick="show('home',this)"><span class="icon">⌂</span>Home</button>
+<button onclick="show('hearing',this)"><span class="icon">◉</span>My Hearing</button>
+<button onclick="show('training',this)"><span class="icon">♫</span>Training</button>
+<button onclick="show('learn',this)"><span class="icon">▣</span>Learn</button>
+<button onclick="show('care',this)"><span class="icon">♥</span>Care</button>
+</nav>
+<div id="toast" class="toast"></div>
+</div>
+<script>
+const screens=[...document.querySelectorAll('.screen')];
+function show(id,btn){
+ screens.forEach(s=>s.classList.toggle('active',s.id===id));
+ if(btn){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+ else{document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.textContent.includes(id==='home'?'Home':id==='hearing'?'My Hearing':id==='training'?'Training':id==='learn'?'Learn':'Care')))}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+function saveCheck(el){toast(el.checked?'Task completed ✓':'Task reopened')}
+function makeScale(id){const e=document.getElementById(id);for(let i=0;i<=10;i++){const b=document.createElement('button');b.textContent=i;b.onclick=()=>{e.querySelectorAll('button').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};e.appendChild(b)}}
+makeScale('difficulty');makeScale('tinnitus');
+function saveDiary(){localStorage.setItem('hearwell_note',document.getElementById('note').value);toast('Diary saved ✓')}
+function startExercise(){toast('Exercise started');setTimeout(()=>alert('Demo exercise: “Would you like chicken or fish?” Choose the sentence you heard.'),250)}
+function generateReport(){const note=localStorage.getItem('hearwell_note')||'No diary note recorded.';alert('HEARWELL PATIENT REPORT\\n\\nDevice use: 7h 42m\\nWeekly plan adherence: 82%\\n\\nLatest note:\\n'+note)}
+function demoCaption(){const c=document.getElementById('captionText');c.textContent='“I would like to schedule my follow-up appointment for next week.”';toast('Caption demo running')}
+document.getElementById('note').value=localStorage.getItem('hearwell_note')||'';
+</script>
+</body>
+</html>
